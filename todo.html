@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>TodoList</h1>
+    <label for="todo">Todo Name:</label>
+    <input type="text" name="todo" id="todo"> <br><br>
+    <label for="des">Description:</label>
+    <input type="text" name="des" id="des">
+    <button id="submit">Submit</button>
+     
+    <ul id="ul">
+        <li id="li"></li>
+    </ul>
+
+    <h1>TodoDone</h1>
+    <ul id="ul2">
+        <li id="li2"></li>
+    </ul>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script>
+        var ul = document.getElementById('ul');
+        var ul2 = document.getElementById('ul2');
+        var submit = document.getElementById('submit');
+        
+        submit.addEventListener('click', getli);
+        
+        function getli() {
+            var name = document.getElementById('todo').value;
+            var des = document.getElementById('des').value;
+          
+            var li = document.createElement('li');
+            li.appendChild(document.createTextNode("Todo: " + name + " Description: " + des));
+            
+            var btn = document.createElement('button');
+            btn.className = 'delete';
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            li.appendChild(btn);
+            
+            var edit = document.createElement('button');
+            edit.appendChild(document.createTextNode('X'));
+            li.appendChild(edit);
+            
+            ul.appendChild(li);
+            
+            // Delete function
+            btn.addEventListener('click', movetoDone);
+            
+            function movetoDone(e) {
+                if (e.target.classList.contains('delete')) {
+                    var li = e.target.parentElement;
+                    ul.removeChild(li);
+                    ul2.appendChild(li);
+                    
+                    // Change button functionality
+                    btn.removeEventListener('click', movetoDone);
+                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    btn.addEventListener('click', moveBack);
+                }
+            }
+            
+            // Move back to TodoList function
+            function moveBack(e) {
+                if (e.target.classList.contains('delete')) {
+                    var li = e.target.parentElement;
+                    ul2.removeChild(li);
+                    ul.appendChild(li);
+                    
+                    // Change button functionality
+                    btn.removeEventListener('click', moveBack);
+                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    btn.addEventListener('click', movetoDone);
+                }
+            }
+        }
+        window.addEventListener("DOMContentLoaded", () => {
+    axios.get("https://crudcrud.com/api/591af559fca44b03a3457df5fc88f8ff/apointment")
+        .then((response) => {
+            console.log(response);
+            var ul = document.createElement("ul"); // Create a new <ul> element
+            for (var i = 0; i < response.data.length; i++) {
+                var name = document.getElementById('todo').value;
+            var des = document.getElementById('des').value;
+          
+            var li = document.createElement('li');
+            li.appendChild(document.createTextNode("Todo: " + name + " Description: " + des));
+            
+            var btn = document.createElement('button');
+            btn.className = 'Done';
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            li.appendChild(btn);
+            
+            var edit = document.createElement('button');
+            edit.appendChild(document.createTextNode('X'));
+            li.appendChild(edit);
+            
+            ul2.appendChild(li);
+             // Append each <li> to the new <ul> element
+            }
+             // Replace the old <ul> element with the new one
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+    </script>
+</body>
+</html>
