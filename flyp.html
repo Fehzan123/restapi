@@ -1,0 +1,75 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="price">Selling Price</label>
+    <input type="text" name="price" id="price">
+    <label for="productName">Product Name</label>
+    <input type="text" name="productName" id="productName">
+    <button id="btn">Submit</button><br><br>
+    <h1 id="products">Products</h1>
+    <ul id="ul"></ul>
+    
+    <h4 id="totalValue">Total Value Worth of Products Rs: 0</h4>
+
+<script>
+   document.getElementById('btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Get the price and product name from the input fields
+    var price = document.getElementById('price').value;
+    var productName = document.getElementById('productName').value;
+    var obj = {
+    price: price,
+    productName: productName
+  };
+
+    axios.post("https://crudcrud.com/api/591af559fca44b03a3457df5fc88f8ff/apointment",obj)
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+    // Add the price to the total value worth of products
+    var totalValueElement = document.getElementById('totalValue');
+    var totalValue = parseInt(totalValueElement.innerText.split('Rs: ')[1]);
+    totalValue += parseInt(price);
+    totalValueElement.innerText = 'Total Value Worth of Products Rs: ' + totalValue;
+
+    // Append the product name and delete button to the li tag
+    var ul = document.getElementById('ul');
+    var li = document.createElement('li');
+    li.appendChild(document.createTextNode(productName));
+    var deleteBtn = document.createElement('button');
+    deleteBtn.appendChild(document.createTextNode('Delete'));
+    deleteBtn.addEventListener('click', function() {
+        ul.removeChild(li); // Remove the li element when delete button is clicked
+        totalValue -= parseInt(price); // Subtract the price from the total value
+        totalValueElement.innerText = 'Total Value Worth of Products Rs: ' + totalValue;
+    });
+    li.appendChild(deleteBtn);
+    ul.appendChild(li);
+
+    // Clear the input fields
+    document.getElementById('price').value = '';
+    document.getElementById('productName').value = '';
+});
+axios.delete("https://crudcrud.com/api/591af559fca44b03a3457df5fc88f8ff/apointment")
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+</script>
+    
+</body>
+</html>
