@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="">Selling Price</label>
+    <input type="text" id="inp">
+    <label for="">Product Name</label>
+    <input type="text" id="des">
+    <label for="">Choose a Catagory</label>
+    <select id="selectTable">
+        <option value="t1">Electronic</option>
+        <option value="t2">Food</option>
+        <option value="t3">SkinCare</option>
+    </select>
+    <button id="btn">Submit</button>
+    <h1>Products</h1><br><br>
+    <h1 id="t1">Electronic Item</h1>
+    <ul id="li1"></ul>
+    <h1 id="t2">Food Item</h1>
+    <ul id="li2"></ul>
+    <h1 id="t3">SkinCare Item</h1>
+    <ul id="li3"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script>
+      document.getElementById('btn').addEventListener('click', function() {
+    var input = document.getElementById('inp').value;
+    var des = document.getElementById('des').value;
+    var obj = {
+           input: inp,
+             des: des
+            };
+            axios.post("https://crudcrud.com/api/fe980698f9164b08b080a9fcd7431a40/apointment", obj)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            var selectedTable = document.getElementById('selectTable').value;
+    if (selectedTable === 't1') {
+        var li = document.createElement('li');
+        var btn = document.createElement('button');
+        btn.appendChild(document.createTextNode('Delete'));
+        btn.className = 'Deletebtn';
+        li.textContent = "Selling Price: " + input + "   && " + "Product Name: " + des;
+        document.getElementById('li1').appendChild(li).appendChild(btn);
+        btn.addEventListener('click', function() {
+            li.remove();
+        });
+    } else if (selectedTable === 't2') {
+        var li = document.createElement('li');
+        var btn = document.createElement('button');
+        btn.appendChild(document.createTextNode('Delete'));
+        btn.className = 'Deletebtn';
+        li.textContent = "Price: " + input + "   && " + "des: " + des;
+        document.getElementById('li2').appendChild(li).appendChild(btn);
+        btn.addEventListener('click', function() {
+            li.remove();
+        });
+    } else if (selectedTable === 't3') {
+        var li = document.createElement('li');
+        var btn = document.createElement('button');
+        btn.appendChild(document.createTextNode('Delete'));
+        btn.className = 'Deletebtn';
+        li.textContent = "Price: " + input + "   && " + "des: " + des;
+        document.getElementById('li3').appendChild(li).appendChild(btn);
+
+        // Delete btn
+        btn.addEventListener('click', function() {
+            li.remove();
+        });
+    }
+    document.getElementById('inp').value = '';
+});
+window.addEventListener('load', function() {
+            axios.get('https://crudcrud.com/api/fe980698f9164b08b080a9fcd7431a40/apointment')
+            .then(function(response) {
+                // Handle the response after the data is retrieved
+                var responseData = response.data;
+                displayData(responseData);
+            })
+            .catch(function(error) {
+                // Handle any errors that occur during the retrieval
+                console.error(error);
+            });
+        });
+
+        function displayData(data) {
+            // Display the data in the respective table
+            var table1Data = data.table1;
+            var table2Data = data.table2;
+            var table3Data = data.table3;
+
+            var li1 = document.getElementById('li1');
+            var li2 = document.getElementById('li2');
+            var li3 = document.getElementById('li3');
+
+            table1Data.forEach(function(item) {
+                var li = document.createElement('li');
+                var btn = document.createElement('button');
+                btn.appendChild(document.createTextNode('Delete'));
+                btn.className = 'Deletebtn';
+                li.textContent = "Price: " + item.price + "   && " + "des: " + item.description;
+                li1.appendChild(li).appendChild(btn);
+                btn.addEventListener('click', function() {
+                    axios.Delete('https://crudcrud.com/api/fe980698f9164b08b080a9fcd7431a40/apointment')
+                    .then(function(response) {
+                        // Handle the response after the data is retrieved
+                        li.remove();
+                
+            })
+            .catch(function(error) {
+                // Handle any errors that occur during the retrieval
+                console.error(error);
+            });
+                });
+            });
+
+            table2Data.forEach(function(item) {
+                var li = document.createElement('li');
+                var btn = document.createElement('button');
+                btn.appendChild(document.createTextNode('Delete'));
+                btn.className = 'Deletebtn';
+                li.textContent = "Price: " + item.price + "   && " + "des: " + item.description;
+                li2.appendChild(li).appendChild(btn);
+                btn.addEventListener('click', function() {
+                    axios.Delete('https://crudcrud.com/api/fe980698f9164b08b080a9fcd7431a40/apointment')
+                    .then(function(response) {
+                        // Handle the response after the data is retrieved
+                        li.remove();
+                
+            })
+            .catch(function(error) {
+                // Handle any errors that occur during the retrieval
+                console.error(error);
+            });
+                });
+            });
+
+            table3Data.forEach(function(item) {
+                var li = document.createElement('li');
+                var btn = document.createElement('button');
+                btn.appendChild(document.createTextNode('Delete'));
+                btn.className = 'Deletebtn';
+                li.textContent = "Price: " + item.price + "   && " + "des: " + item.description;
+                li3.appendChild(li).appendChild(btn);
+                btn.addEventListener('click', function() {
+                    axios.Delete('https://crudcrud.com/api/fe980698f9164b08b080a9fcd7431a40/apointment')
+                    .then(function(response) {
+                        // Handle the response after the data is retrieved
+                        li.remove();
+                
+            })
+            .catch(function(error) {
+                // Handle any errors that occur during the retrieval
+                console.error(error);
+            });
+                });
+            });
+        }
+    </script>
+</body>
+</html>
